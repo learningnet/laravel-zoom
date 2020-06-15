@@ -13,13 +13,12 @@
         }
     ],
     "require": {
-        "php": "^7.2|^7.3", 
-        "guzzlehttp/guzzle": "~6.0|~5.0|~4.0",
-        "firebase/php-jwt": "^5.0",
-        "illuminate/support": "^6.0|^7.0"
+        "php": "^7.0|^7.1|^7.2|^7.3",
+        "illuminate/support": "^5.5",
+        "macsidigital/laravel-api-client": "^1.0"
     },
     "require-dev": {
-        "orchestra/testbench": "^4.0",
+        "orchestra/testbench": "^3.0",
         "phpunit/phpunit": "^8.0"
     },
     "autoload": {
@@ -50,5 +49,21 @@
             }
         }
     },
-    "minimum-stability" : "dev"
+    "minimum-stability" : "dev",
+    "repositories": [
+        {
+            "type": "path",
+            "url":  "../laravel-api-client",
+            "options": {
+              "symlink": true
+            }
+        },
+        {
+            "type": "path",
+            "url":  "../laravel-oauth2-client",
+            "options": {
+              "symlink": true
+            }
+        }
+    ]
 }
