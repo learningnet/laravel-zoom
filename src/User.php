@@ -94,6 +94,14 @@ class User extends Model
         }
     }
 
+    public function getID()
+    {
+        if (config('zoom.authentication_method') === 'oauth2') {
+            return 'me';
+        }
+        return parent::getID();
+    }
+
     public function meetings()
     {
         $meeting = new \MacsiDigital\Zoom\Meeting;

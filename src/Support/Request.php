@@ -5,6 +5,7 @@ namespace MacsiDigital\Zoom\Support;
 use Exception;
 use Firebase\JWT\JWT;
 use GuzzleHttp\Client;
+use Trellis\Entity\OAuth\OAuthAPI;
 
 class Request
 {
@@ -15,7 +16,7 @@ class Request
         $options = [
             'base_uri' => 'https://api.zoom.us/v2/',
             'headers' => [
-                'Authorization' => 'Bearer '.$this->generateJWT(),
+                'Authorization' => 'Bearer ' . $this->getAuthorizationToken(),
                 'Content-Type' => 'application/json',
                 'Accept' => 'application/json',
             ],
@@ -23,6 +24,15 @@ class Request
         $this->client = new Client($options);
 
         return $this;
+    }
+
+    public function getAuthorizationToken()
+    {
+        if (config('zoom.authentication_method') === 'jwt') {
+            return $this->generateJWT();
+        } elseif (config('zoom.authentication_method') === 'oauth2')  {
+            return $this->getOauthAccessToken();
+        }
     }
 
     public function generateJWT()
@@ -34,6 +44,12 @@ class Request
         ];
 
         return JWT::encode($token, config('zoom.api_secret'));
+    }
+
+    public function getOauthAccessToken()
+    {
+        $oauthApi = new OAuthAPI('zoom');
+        return $oauthApi->getAccessToken();
     }
 
     public function get($end_point, $query = '')
